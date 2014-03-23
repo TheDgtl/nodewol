@@ -17,6 +17,7 @@ var os = require('os');
 var exec = require('child_process').exec;
 var db = require('dirty')('device.db');
 var wol = require('wake_on_lan');
+var insubnet = require('insubnet');
 var child;
 var nbtscan_available;
 var alarms = [];
@@ -189,26 +190,9 @@ nbtscan_full = function() {
  */
 
 in_subnet = function(ip) {
-    var sub = config.subnet.split('/');
-    var netip = sub[0].split('.');
-    var testip = ip.split('.');
+    var subnet = config.subnet;
 
-    var netip_bin = ( parseInt(netip[0]) << 24 )
-        | ( parseInt(netip[1]) << 16 )
-        | ( parseInt(netip[2]) << 8 )
-        | ( parseInt(netip[3]) << 0 );
-    var testip_bin = ( parseInt(testip[0]) << 24 )
-        | ( parseInt(testip[1]) << 16 )
-        | ( parseInt(testip[2]) << 8 )
-        | ( parseInt(testip[3]) << 0 );
-
-    var mask = 0;
-    for (var i = 31 - sub[1]; i <= 31; i++)
-    {
-        mask |= 1 << i;
-    }
-
-    if ( ( netip_bin & mask ) == ( testip_bin & mask ) )
+    if ( insubnet.Auto(ip, subnet) )
     {
         return true;
     }

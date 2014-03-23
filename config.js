@@ -5,10 +5,10 @@
 var config = {};
 
 // The port to listen to
-config.port = 80;
+config.port = 8082;
 
 // The subnet you want to examine (in CIDR notation ONLY)
-config.subnet = "192.168.2.0/24";
+config.subnet = "192.168.1.0/24";
 
 // True if you want to disable full nbtscans
 config.disable_full_nbtscan = false;
