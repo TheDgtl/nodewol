@@ -132,7 +132,7 @@ updatename = function(ip, name, override) {
 nbtscan = function(ip) {
     if (!nbtscan_available) return "";
 
-    var child = exec("nbtscan -q -s , "+ip, function(error,stdout,stderr) {
+    var child = exec("nbtscan -qs , "+ip, function(error,stdout,stderr) {
         if (error == null)
         {
             var sout = stdout.toString();
@@ -171,7 +171,7 @@ add_dev = function(dev) {
 nbtscan_full = function() {
     if (config.disable_full_nbtscan) return
     console.log("Issuing a full nbtscan of "+config.subnet);
-    var child = exec("nbtscan -s , -r "+config.subnet,
+    var child = exec("nbtscan -qs , "+config.subnet,
         function(error,stdout,stderr) {
             if (error == null)
             {
@@ -207,7 +207,7 @@ in_subnet = function(ip) {
 updatenames = function(all) {
     all = typeof all !== 'undefined' ? all : false;
     db.forEach(function(key, val) {
-        if (all || val.name == "" || val.name == undefined)
+        if (all || val.name == val.ip || val.name == "" || val.name == undefined)
         {
             try {
                 console.log("Updating name for " + val.ip);
